@@ -17,7 +17,7 @@ namespace {
 
   void socketTask(const std::shared_ptr<oatpp::websocket::WebSocket>& websocket) {
     websocket->listen();
-    OATPP_LOGD(TAG, "SOCKET CLOSED!!!");
+    OATPP_LOGd(TAG, "SOCKET CLOSED!!!");
     finished = true;
   }
 
@@ -48,7 +48,7 @@ void run() {
 
   while(!finished) {
     {
-      OATPP_LOGD(TAG, "sending message...");
+      OATPP_LOGd(TAG, "sending message...");
       std::lock_guard<std::mutex> lock(socketWriteMutex);
       socket->sendOneFrameText("hello");
     }
@@ -60,8 +60,8 @@ void run() {
 }
 
 int main() {
-  oatpp::base::Environment::init();
+  oatpp::Environment::init();
   run();
-  oatpp::base::Environment::destroy();
+  oatpp::Environment::destroy();
   return 0;
 }

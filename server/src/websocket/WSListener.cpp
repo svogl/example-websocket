@@ -1,20 +1,21 @@
 
 #include "WSListener.hpp"
+#include "oatpp/base/Log.hpp"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // WSListener
 
 void WSListener::onPing(const WebSocket& socket, const oatpp::String& message) {
-  OATPP_LOGD(TAG, "onPing");
+  OATPP_LOGd(TAG, "onPing");
   socket.sendPong(message);
 }
 
 void WSListener::onPong(const WebSocket& socket, const oatpp::String& message) {
-  OATPP_LOGD(TAG, "onPong");
+  OATPP_LOGd(TAG, "onPong");
 }
 
 void WSListener::onClose(const WebSocket& socket, v_uint16 code, const oatpp::String& message) {
-  OATPP_LOGD(TAG, "onClose code=%d", code);
+  OATPP_LOGd(TAG, "onClose code={}", code);
 }
 
 void WSListener::readMessage(const WebSocket& socket, v_uint8 opcode, p_char8 data, oatpp::v_io_size size) {
@@ -24,7 +25,7 @@ void WSListener::readMessage(const WebSocket& socket, v_uint8 opcode, p_char8 da
     auto wholeMessage = m_messageBuffer.toString();
     m_messageBuffer.setCurrentPosition(0);
 
-    OATPP_LOGD(TAG, "onMessage message='%s'", wholeMessage->c_str());
+    OATPP_LOGd(TAG, "onMessage message='{}'", wholeMessage);
 
     /* Send message in reply */
     socket.sendOneFrameText( "Hello from oatpp!: " + wholeMessage);
@@ -43,7 +44,7 @@ std::atomic<v_int32> WSInstanceListener::SOCKETS(0);
 void WSInstanceListener::onAfterCreate(const oatpp::websocket::WebSocket& socket, const std::shared_ptr<const ParameterMap>& params) {
 
   SOCKETS ++;
-  OATPP_LOGD(TAG, "New Incoming Connection. Connection count=%d", SOCKETS.load());
+  OATPP_LOGd(TAG, "New Incoming Connection. Connection count={}", SOCKETS.load());
 
   /* In this particular case we create one WSListener per each connection */
   /* Which may be redundant in many cases */
@@ -53,6 +54,6 @@ void WSInstanceListener::onAfterCreate(const oatpp::websocket::WebSocket& socket
 void WSInstanceListener::onBeforeDestroy(const oatpp::websocket::WebSocket& socket) {
 
   SOCKETS --;
-  OATPP_LOGD(TAG, "Connection closed. Connection count=%d", SOCKETS.load());
+  OATPP_LOGd(TAG, "Connection closed. Connection count={}", SOCKETS.load());
 
 }

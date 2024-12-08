@@ -26,7 +26,7 @@ void run() {
   oatpp::network::Server server(connectionProvider, connectionHandler);
 
   /* Priny info about server port */
-  OATPP_LOGI("MyApp", "Server running on port %s", connectionProvider->getProperty("port").getData());
+  OATPP_LOGi("MyApp", "Server running on port {}", connectionProvider->getProperty("port").toString());
 
   /* Run server */
   server.run();
@@ -35,11 +35,11 @@ void run() {
 
 int main(int argc, const char * argv[]) {
 
-  oatpp::base::Environment::init();
+  oatpp::Environment::init();
 
   run();
 
-  oatpp::base::Environment::destroy();
+  oatpp::Environment::destroy();
 
   return 0;
 }

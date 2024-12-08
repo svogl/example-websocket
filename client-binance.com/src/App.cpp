@@ -11,7 +11,7 @@
 #include "oatpp-mbedtls/client/ConnectionProvider.hpp"
 #include "oatpp-mbedtls/Config.hpp"
 
-#include "oatpp/parser/json/mapping/ObjectMapper.hpp"
+#include "oatpp/json/ObjectMapper.hpp"
 
 #include <thread>
 
@@ -86,7 +86,7 @@ void run() {
   auto connector = oatpp::websocket::Connector::createShared(connectionProvider);
 
   /* object mapper for DTO objects */
-  auto objectMapper = oatpp::parser::json::mapping::ObjectMapper::createShared();
+  auto objectMapper = std::make_shared<oatpp::json::ObjectMapper>();
 
 
   /* Start Stream Reading Tasks */
@@ -103,8 +103,8 @@ void run() {
 }
 
 int main() {
-  oatpp::base::Environment::init();
+  oatpp::Environment::init();
   run();
-  oatpp::base::Environment::destroy();
+  oatpp::Environment::destroy();
   return 0;
 }

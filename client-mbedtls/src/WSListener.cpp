@@ -1,21 +1,22 @@
 
 #include "WSListener.hpp"
+#include "oatpp/base/Log.hpp"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // WSListener
 
 void WSListener::onPing(const WebSocket& socket, const oatpp::String& message) {
-  OATPP_LOGD(TAG, "onPing");
+  OATPP_LOGd(TAG, "onPing");
   std::lock_guard<std::mutex> lock(m_writeMutex);
   socket.sendPong(message);
 }
 
 void WSListener::onPong(const WebSocket& socket, const oatpp::String& message) {
-  OATPP_LOGD(TAG, "onPong");
+  OATPP_LOGd(TAG, "onPong");
 }
 
 void WSListener::onClose(const WebSocket& socket, v_uint16 code, const oatpp::String& message) {
-  OATPP_LOGD(TAG, "onClose code=%d", code);
+  OATPP_LOGd(TAG, "onClose code={}", code);
 }
 
 void WSListener::readMessage(const WebSocket& socket, v_uint8 opcode, p_char8 data, oatpp::v_io_size size) {
@@ -25,7 +26,7 @@ void WSListener::readMessage(const WebSocket& socket, v_uint8 opcode, p_char8 da
     auto wholeMessage = m_messageBuffer.toString();
     m_messageBuffer.setCurrentPosition(0);
 
-    OATPP_LOGD(TAG, "on message received '%s'", wholeMessage->c_str());
+    OATPP_LOGd(TAG, "on message received '{}'", wholeMessage->c_str());
 
     /* Send message in reply */
     //std::lock_guard<std::mutex> lock(m_writeMutex);

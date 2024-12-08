@@ -4,7 +4,7 @@
 
 #include "WSListener.hpp"
 
-#include "oatpp/core/data/mapping/ObjectMapper.hpp"
+#include "oatpp/data/mapping/ObjectMapper.hpp"
 
 /**
  * Template event listener class.

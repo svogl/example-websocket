@@ -9,12 +9,12 @@
 #include "oatpp/web/server/HttpRouter.hpp"
 #include "oatpp/network/tcp/server/ConnectionProvider.hpp"
 
-#include "oatpp/parser/json/mapping/ObjectMapper.hpp"
+#include "oatpp/json/ObjectMapper.hpp"
 
-#include "oatpp/core/macro/component.hpp"
+#include "oatpp/macro/component.hpp"
 
 /**
- *  Class which creates and holds Application components and registers components in oatpp::base::Environment
+ *  Class which creates and holds Application components and registers components in oatpp::Environment
  *  Order of components initialization is from top to bottom
  */
 class AppComponent {
@@ -46,7 +46,7 @@ public:
    *  Create ObjectMapper component to serialize/deserialize DTOs in Contoller's API
    */
   OATPP_CREATE_COMPONENT(std::shared_ptr<oatpp::data::mapping::ObjectMapper>, apiObjectMapper)([] {
-    return oatpp::parser::json::mapping::ObjectMapper::createShared();
+    return std::make_shared<oatpp::json::ObjectMapper>();
   }());
 
   /**

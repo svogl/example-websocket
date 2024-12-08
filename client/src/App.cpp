@@ -6,6 +6,8 @@
 
 #include "oatpp/network/tcp/client/ConnectionProvider.hpp"
 
+#include "oatpp/base/Log.hpp"
+
 #include <thread>
 
 namespace {
@@ -16,7 +18,7 @@ namespace {
 
   void socketTask(const std::shared_ptr<oatpp::websocket::WebSocket>& websocket) {
     websocket->listen();
-    OATPP_LOGD(TAG, "SOCKET CLOSED!!!");
+    OATPP_LOGd(TAG, "SOCKET CLOSED!!!");
     finished = true;
   }
 
@@ -24,7 +26,7 @@ namespace {
 
 void run() {
 
-  OATPP_LOGI(TAG, "Application Started");
+  OATPP_LOGi(TAG, "Application Started");
 
   auto connectionProvider = oatpp::network::tcp::client::ConnectionProvider::createShared({"demo.piesocket.com", 80});
 
@@ -32,7 +34,7 @@ void run() {
 
   auto connection = connector->connect("v3/channel_1?api_key=VCXCEuvhGcBDP7XhiJJUDvR1e1D3eiVjgZ9VRiaV&notify_self");
 
-  OATPP_LOGI(TAG, "Connected");
+  OATPP_LOGi(TAG, "Connected");
 
   auto socket = oatpp::websocket::WebSocket::createShared(connection, true /* maskOutgoingMessages must be true for clients */);
 
@@ -44,7 +46,7 @@ void run() {
 
   while(!finished) {
     {
-      OATPP_LOGD(TAG, "sending message...");
+      OATPP_LOGd(TAG, "sending message...");
       std::lock_guard<std::mutex> lock(socketWriteMutex);
       socket->sendOneFrameText("hello");
     }
@@ -56,8 +58,8 @@ void run() {
 }
 
 int main() {
-  oatpp::base::Environment::init();
+  oatpp::Environment::init();
   run();
-  oatpp::base::Environment::destroy();
+  oatpp::Environment::destroy();
   return 0;
 }
